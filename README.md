@@ -65,6 +65,43 @@ Each bit represents a layer: `1` = active, `0` = inactive. Bit 0 of byte 0 is la
 - Report Size: 8 bits
 - Report Count: 2
 
+## Testing
+
+Tests run on `native_posix_64` — no hardware needed. They simulate key presses via ZMK's mock kscan driver and verify layer report output against snapshots.
+
+### Setup (one-time)
+
+Create a west workspace with ZMK:
+
+```bash
+mkdir zmk-workspace && cd zmk-workspace
+west init -l ../zmk-layer-report/tests
+west update
+```
+
+### Running tests
+
+```bash
+cd zmk-workspace
+./zmk-layer-report/tests/run.sh
+```
+
+The test runner builds each test case, runs the firmware binary, filters log output through sed patterns, and diffs against expected snapshots.
+
+To auto-accept updated snapshots (when you intentionally change output format):
+
+```bash
+# After running tests and reviewing the diffs, copy the filtered output over the snapshot:
+cp tests/build/layer_report_normal.filtered.log tests/layer_report/normal/keycode_events.snapshot
+```
+
+### Test cases
+
+| Test | Description |
+|---|---|
+| `normal` | Press and release a single layer key. Verifies bitmask toggles correctly. |
+| `multiple_layers` | Hold layer 1, then also hold layer 2, release in reverse. Verifies multi-layer bitmask. |
+
 ## Companion App
 
 This module only handles the firmware side. A companion app running on the host is needed to read the HID reports and display the overlay. The companion app should:
