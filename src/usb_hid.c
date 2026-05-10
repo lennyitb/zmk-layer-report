@@ -16,7 +16,7 @@ static const struct hid_ops ops = {
     .int_in_ready = in_ready_cb,
 };
 
-static int usb_hid_init(void) {
+static int layer_report_usb_init(void) {
     hid_dev = device_get_binding("HID_LAYER_REPORT");
     if (hid_dev == NULL) {
         LOG_ERR("cannot get HID device binding");
@@ -25,10 +25,10 @@ static int usb_hid_init(void) {
 
     usb_hid_register_device(hid_dev, layer_report_desc, sizeof(layer_report_desc), &ops);
 
-    return usb_hid_init_device(hid_dev);
+    return usb_hid_init(hid_dev);
 }
 
-SYS_INIT(usb_hid_init, APPLICATION, CONFIG_APPLICATION_INIT_PRIORITY);
+SYS_INIT(layer_report_usb_init, APPLICATION, CONFIG_APPLICATION_INIT_PRIORITY);
 
 int zmk_layer_report_usb_send(struct zmk_layer_report *report) {
     if (hid_dev == NULL) {

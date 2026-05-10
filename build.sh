@@ -10,7 +10,7 @@ source "$VENV/bin/activate"
 export ZEPHYR_SDK_INSTALL_DIR="$ZEPHYR_SDK"
 export ZEPHYR_BASE="$ZMK_WORKSPACE/zephyr"
 
-BOARD="${1:-nice_nano_nrf52840_zmk}"
+BOARD="${1:-nice_nano/nrf52840/zmk}"
 SHIELD="${2:-}"
 
 BUILD_ARGS=(
