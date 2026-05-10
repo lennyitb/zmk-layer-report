@@ -1,3 +1,4 @@
+#include <string.h>
 #include <zmk_layer_report/hid.h>
 #include <zephyr/logging/log.h>
 
@@ -5,17 +6,23 @@ LOG_MODULE_REGISTER(zmk_layer_report, CONFIG_ZMK_LOG_LEVEL);
 
 static struct zmk_layer_report report = {
     .report_id = ZMK_LAYER_REPORT_REPORT_ID,
-    .body = {.layer_state = 0},
+    .body = {.layer_state = 0, .modifiers = 0, .mod_flags = 0},
 };
 
 struct zmk_layer_report *zmk_layer_report_get(void) { return &report; }
 
-int zmk_layer_report_update(uint16_t layer_state) {
-    if (report.body.layer_state == layer_state) {
+int zmk_layer_report_update(uint16_t layer_state, uint8_t modifiers, uint8_t mod_flags) {
+    struct zmk_layer_report_body new_body = {
+        .layer_state = layer_state,
+        .modifiers = modifiers,
+        .mod_flags = mod_flags,
+    };
+    if (memcmp(&report.body, &new_body, sizeof(new_body)) == 0) {
         return -EALREADY;
     }
-    report.body.layer_state = layer_state;
-    LOG_DBG("layer state updated: 0x%04x", layer_state);
+    report.body = new_body;
+    LOG_DBG("layer state updated: 0x%04x mods: 0x%02x flags: 0x%02x",
+            layer_state, modifiers, mod_flags);
     return 0;
 }
 

@@ -21,12 +21,14 @@
         0x15, 0x00,                                   /*   Logical Minimum (0) */ \
         0x26, 0xFF, 0x00,                             /*   Logical Maximum (255) */ \
         0x75, 0x08,                                   /*   Report Size (8) */ \
-        0x95, 0x02,                                   /*   Report Count (2) */ \
+        0x95, 0x04,                                   /*   Report Count (4) */ \
         0x81, 0x02,                                   /*   Input (Data, Var, Abs) */ \
         0xC0                                          /* End Collection */
 
 struct zmk_layer_report_body {
     uint16_t layer_state;
+    uint8_t modifiers;
+    uint8_t mod_flags;
 } __packed;
 
 struct zmk_layer_report {
@@ -34,6 +36,6 @@ struct zmk_layer_report {
     struct zmk_layer_report_body body;
 } __packed;
 
-int zmk_layer_report_update(uint16_t layer_state);
+int zmk_layer_report_update(uint16_t layer_state, uint8_t modifiers, uint8_t mod_flags);
 int zmk_layer_report_send(void);
 struct zmk_layer_report *zmk_layer_report_get(void);

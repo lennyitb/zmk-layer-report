@@ -2,8 +2,8 @@ config ZMK_LAYER_REPORT
     bool "Layer Report HID"
     default n
     help
-      Enable layer state reporting via a vendor-defined HID report.
-      Sends a 2-byte bitmask of active layers to the host.
+      Enable layer and modifier state reporting via a vendor-defined HID report.
+      Sends a 4-byte state report (layer bitmask + modifiers) to the host.
 
 if ZMK_LAYER_REPORT
 
