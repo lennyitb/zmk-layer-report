@@ -1,0 +1,6 @@
+common:
+  tags:
+    - layer_report
+tests:
+  layer_report.unit:
+    type: unit
