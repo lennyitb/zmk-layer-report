@@ -48,14 +48,16 @@ CONFIG_ZMK_LAYER_REPORT=y
 
 ## HID Report Format
 
-The report is sent as a vendor-defined HID input report:
+The report is sent as a vendor-defined HID input report (4 bytes):
 
 | Byte | Description |
 |---|---|
 | 0 | Layer state bits 0-7 (layers 0-7) |
 | 1 | Layer state bits 8-15 (layers 8-15) |
+| 2 | Effective modifier bitmask (standard USB HID modifier bits) |
+| 3 | Modifier source flags (bit set = sticky/one-shot) |
 
-Each bit represents a layer: `1` = active, `0` = inactive. Bit 0 of byte 0 is layer 0 (base layer, typically always active).
+See [docs/state-report-spec.md](docs/state-report-spec.md) for the full protocol spec including byte layout, interpretation rules, and HID descriptor.
 
 ### HID Report Descriptor
 
@@ -63,7 +65,7 @@ Each bit represents a layer: `1` = active, `0` = inactive. Bit 0 of byte 0 is la
 - Usage: `0x01`
 - Report ID: `0x20` (32)
 - Report Size: 8 bits
-- Report Count: 2
+- Report Count: 4
 
 ## Testing
 
