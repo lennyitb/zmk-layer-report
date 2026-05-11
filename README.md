@@ -4,7 +4,7 @@ A ZMK module that reports active keyboard layer state to the host via a custom H
 
 ## How it works
 
-When layer keys are pressed or released, the module sends a 2-byte HID report containing a bitmask of active layers (bit N = layer N is active). The report uses a vendor-defined HID usage page (`0xFF42`) so it doesn't interfere with normal keyboard operation.
+When layer or modifier state changes, the module sends a 4-byte HID report containing a bitmask of active layers, the effective modifier state, and modifier source flags (held vs. sticky/one-shot). The report uses a vendor-defined HID usage page (`0xFF42`) so it doesn't interfere with normal keyboard operation.
 
 Supports up to 16 layers.
 
@@ -110,5 +110,6 @@ This module only handles the firmware side. A companion app running on the host 
 
 1. Find the HID device with usage page `0xFF42`
 2. Read input reports (report ID `0x20`)
-3. Parse the 2-byte layer bitmask
-4. Display the appropriate key mapping overlay
+3. Parse bytes 0-1 as little-endian uint16 for the active layer set
+4. Parse byte 2 for active modifiers, byte 3 for sticky/one-shot flags
+5. Display the appropriate overlay
