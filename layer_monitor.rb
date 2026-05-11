@@ -150,6 +150,7 @@ while running
   next if data == prev_data
   prev_data = data
 
+  $stdout.puts "  raw: #{data.bytes.map { |b| "%02x" % b }.join(" ")}"
   $stdout.puts format_report(data)
   $stdout.flush
 end
