@@ -1,3 +1,4 @@
 build/
 build_test/
 .claude/worktrees/
+.vscode/
